@@ -10,7 +10,7 @@ router.use(authMiddleware);
 router.post('/', async (req, res) => {
     try {
         const posts = await Posts.create(req.body);
-        return res.send({ 
+        return res.send({
             posts
         });
     } catch (err) {
@@ -18,21 +18,46 @@ router.post('/', async (req, res) => {
     }
 });
 
-router.get('/', async (req, res) => {
-    const {text} = req.body;
-
+router.post('/imagens', async (req, res) => {
     try {
-        if(text) {
-            const busca = await Posts.find({ text: new RegExp('^' + text)});
-            return res.send({ busca });
+        if (!req.files)  {
+            res.send({
+                status: false,
+                message: "Sem arquivos"
+            })
         }
         else {
+            const { imagem } = req.files;
+
+            imagem.mv('../imgs/' + imagem.name)
+
+            res.send({
+                status: true,
+                message: "Imagem upada com sucesso"
+            })
+        }
+    } catch (err) {
+        res.status(500).send(err);
+    }
+})
+
+router.get('/:text', async (req, res) => {
+    const { text } = req.params;
+
+    try {
+        if (text == "*") {
             const busca = await Posts.find();
             return res.send({ busca });
-        } 
+        }
+        else if (text) {
+            const busca = await Posts.find({ text: new RegExp('^' + text) });
+            return res.send({ busca });
+        }
     } catch (err) {
         return res.status(400).send({ error: 'Falha na busca' });
     }
 });
+
+
 
 module.exports = app => app.use('/projects', router); 

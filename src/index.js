@@ -15,6 +15,7 @@ app.use(cors());
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(morgan("dev"));
+app.use('/imagens', express.static(`./imagens`));
 
 require('./controllers/authController')(app);
 require('./controllers/projectController')(app);

@@ -29,17 +29,17 @@ router.post('/imagens', async (req, res) => {
         else {
             const { imagem } = req.files;
 
-            imagem.mv('../imgs/' + imagem.name)
+            imagem.mv('./imagens/' + imagem.name)
 
             res.send({
                 status: true,
-                message: "Imagem upada com sucesso"
+                message: imagem.name
             })
         }
     } catch (err) {
         res.status(500).send(err);
     }
-})
+});
 
 router.get('/:text', async (req, res) => {
     const { text } = req.params;
@@ -57,7 +57,5 @@ router.get('/:text', async (req, res) => {
         return res.status(400).send({ error: 'Falha na busca' });
     }
 });
-
-
 
 module.exports = app => app.use('/projects', router); 

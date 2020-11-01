@@ -20,4 +20,4 @@ app.use('/imagens', express.static(`./imagens`));
 require('./controllers/authController')(app);
 require('./controllers/projectController')(app);
 
-app.listen(4000);
+app.listen(process.env.PORT || 4000);

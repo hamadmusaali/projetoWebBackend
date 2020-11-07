@@ -18,6 +18,12 @@ router.post('/register', async (req, res) => {
     const { email } = req.body;
 
     try {
+        if (email == "")
+            return res.status(400).send({ error: 'Usuário não pode ser vazio' });
+
+        if (email.length < 3)
+            return res.status(400).send({ error: 'Usuário não pode ser menor que 3' });
+
         if (await User.findOne({ email }))
             return res.status(400).send({ error: 'Usuário já existe' });
 

@@ -12,6 +12,7 @@ const UserSchema = new mongoose.Schema({
         type: String,
         required: true,
         select: false,
+        minlength: [3, 'Senha deve ter no minimo 3 caracters'],
     },
     createdAt: {
         type: Date,
